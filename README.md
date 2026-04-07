@@ -7,7 +7,7 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)]()
 [![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)]()
 
-This project is an interactive simulator of a Local Area Network (LAN) topology focused on the behavior of a **Layer 2 Switch**. It was developed as a practical study tool for the **Cisco CCNA (200-301)** certification, visually illustrating how a switch builds its MAC Address Table and makes frame forwarding decisions.
+This project is an interactive simulator of a Local Area Network (LAN) topology focused on the behavior of a **Layer 2 Switch**. It was developed as a practical study tool for the **Cisco CCNA (200-125)** certification, visually illustrating how a switch builds its MAC Address Table and makes frame forwarding decisions.
 
 ---
 
