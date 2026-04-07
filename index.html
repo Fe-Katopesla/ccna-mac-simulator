@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador - Tabela MAC (Switch Layer 2)</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+        .header { background: #2c3e50; color: white; padding: 15px; border-radius: 8px; text-align: center; }
+        
+        /* Controles */
+        .controls { display: flex; gap: 15px; justify-content: center; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select, button { padding: 8px 12px; border-radius: 4px; border: 1px solid #ccc; font-size: 14px; }
+        button { background: #3498db; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+        button.danger { background: #e74c3c; }
+        button.danger:hover { background: #c0392b; }
+
+        /* Área do Switch e PCs */
+        .network-area { position: relative; height: 350px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        
+        .node { position: absolute; display: flex; flex-direction: column; align-items: center; font-weight: bold; font-size: 12px; }
+        .icon { width: 50px; height: 50px; background: #ecf0f1; border: 2px solid #bdc3c7; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; font-size: 24px; }
+        
+        #switch { top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; }
+        #switch .icon { background: #34495e; color: white; border-color: #2c3e50; }
+
+        #pc1 { top: 20px; left: 20px; }
+        #pc2 { top: 20px; right: 20px; }
+        #pc3 { bottom: 20px; left: 20px; }
+        #pc4 { bottom: 20px; right: 20px; }
+
+        /* Pacote animado */
+        .packet { position: absolute; width: 20px; height: 20px; background: #e67e22; border-radius: 50%; opacity: 0; transition: all 0.8s ease; z-index: 5; }
+
+        /* Tabelas e Logs */
+        .info-area { display: flex; gap: 20px; }
+        .panel { flex: 1; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .panel h3 { margin-top: 0; font-size: 16px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th, td { padding: 8px; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; }
+
+        .log-box { height: 150px; overflow-y: auto; background: #222; color: #0f0; font-family: monospace; padding: 10px; font-size: 13px; border-radius: 4px; }
+        .log-box p { margin: 5px 0; }
+        .log-sys { color: #aaa; }
+        .log-learn { color: #f1c40f; }
+        .log-action { color: #3498db; }
+        .log-alert { color: #e74c3c; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Simulador de Roteamento L2 (Switch MAC Learning)</h2>
+    </div>
+
+    <div class="controls">
+        <label>Origem:
+            <select id="sender">
+                <option value="1">PC 1 (AA:AA:AA:AA:AA:AA)</option>
+                <option value="2">PC 2 (BB:BB:BB:BB:BB:BB)</option>
+                <option value="3">PC 3 (CC:CC:CC:CC:CC:CC)</option>
+                <option value="4">PC 4 (DD:DD:DD:DD:DD:DD)</option>
+            </select>
+        </label>
+        <label>Destino:
+            <select id="receiver">
+                <option value="2">PC 2 (BB:BB:BB:BB:BB:BB)</option>
+                <option value="1">PC 1 (AA:AA:AA:AA:AA:AA)</option>
+                <option value="3">PC 3 (CC:CC:CC:CC:CC:CC)</option>
+                <option value="4">PC 4 (DD:DD:DD:DD:DD:DD)</option>
+            </select>
+        </label>
+        <button onclick="sendFrame()">Enviar Quadro</button>
+        <button class="danger" onclick="clearTable()">Limpar Tabela MAC</button>
+    </div>
+
+    <div class="network-area" id="network">
+        <div class="node" id="switch">
+            <div class="icon">🖧</div>
+            <span>Switch</span>
+        </div>
+        <div class="node" id="pc1">
+            <div class="icon">💻</div>
+            <span>PC 1<br>Porta: Fa0/1</span>
+        </div>
+        <div class="node" id="pc2">
+            <div class="icon">💻</div>
+            <span>PC 2<br>Porta: Fa0/2</span>
+        </div>
+        <div class="node" id="pc3">
+            <div class="icon">💻</div>
+            <span>PC 3<br>Porta: Fa0/3</span>
+        </div>
+        <div class="node" id="pc4">
+            <div class="icon">💻</div>
+            <span>PC 4<br>Porta: Fa0/4</span>
+        </div>
+    </div>
+
+    <div class="info-area">
+        <div class="panel">
+            <h3>Tabela de Endereços MAC</h3>
+            <table>
+                <thead>
+                    <tr><th>Porta</th><th>Endereço MAC</th></tr>
+                </thead>
+                <tbody id="mac-table-body">
+                    </tbody>
+            </table>
+        </div>
+        <div class="panel">
+            <h3>Logs de Eventos (Console)</h3>
+            <div class="log-box" id="log-box"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configuração dos PCs
+    const pcs = {
+        '1': { mac: 'AA:AA:AA:AA:AA:AA', port: 'Fa0/1', el: document.getElementById('pc1') },
+        '2': { mac: 'BB:BB:BB:BB:BB:BB', port: 'Fa0/2', el: document.getElementById('pc2') },
+        '3': { mac: 'CC:CC:CC:CC:CC:CC', port: 'Fa0/3', el: document.getElementById('pc3') },
+        '4': { mac: 'DD:DD:DD:DD:DD:DD', port: 'Fa0/4', el: document.getElementById('pc4') }
+    };
+
+    let macTable = {}; // Tabela MAC (MAC -> Porta)
+    let isAnimating = false; // Evitar spam de cliques
+
+    function log(message, type = 'log-sys') {
+        const box = document.getElementById('log-box');
+        box.innerHTML += `<p class="${type}">> ${message}</p>`;
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function updateTableUI() {
+        const tbody = document.getElementById('mac-table-body');
+        tbody.innerHTML = '';
+        for (const [mac, port] of Object.entries(macTable)) {
+            tbody.innerHTML += `<tr><td>${port}</td><td>${mac}</td></tr>`;
+        }
+    }
+
+    function clearTable() {
+        macTable = {};
+        updateTableUI();
+        log("Tabela MAC foi limpa pelo administrador.", "log-alert");
+    }
+
+    // Lógica principal de envio
+    async function sendFrame() {
+        if (isAnimating) return;
+        
+        const senderId = document.getElementById('sender').value;
+        const receiverId = document.getElementById('receiver').value;
+
+        if (senderId === receiverId) {
+            alert("Origem e Destino não podem ser os mesmos!");
+            return;
+        }
+
+        isAnimating = true;
+        const sender = pcs[senderId];
+        const receiver = pcs[receiverId];
+        const switchEl = document.getElementById('switch');
+
+        log(`Quadro enviado de PC ${senderId} para PC ${receiverId}.`, "log-sys");
+
+        // PASSO 1: PC envia para o Switch
+        await animatePacket(sender.el, switchEl);
+
+        // PASSO 2: Switch aprende o MAC de Origem
+        if (!macTable[sender.mac]) {
+            macTable[sender.mac] = sender.port;
+            updateTableUI();
+            log(`Switch APRENDEU MAC ${sender.mac} na porta ${sender.port}.`, "log-learn");
+        } else {
+            log(`MAC ${sender.mac} já conhecido na porta ${sender.port}. Renova timer.`, "log-sys");
+        }
+
+        // PASSO 3: Switch decide o encaminhamento
+        await new Promise(r => setTimeout(r, 500)); // Pequena pausa para o switch "pensar"
+
+        if (macTable[receiver.mac]) {
+            // UNICAST (Destino Conhecido)
+            const targetPort = macTable[receiver.mac];
+            log(`Destino conhecido! Encaminhando UNICAST para porta ${targetPort}.`, "log-action");
+            await animatePacket(switchEl, receiver.el);
+        } else {
+            // FLOODING (Destino Desconhecido)
+            log(`Destino desconhecido! Fazendo FLOODING (Inundação) para todas as portas...`, "log-alert");
+            const floodAnimations = [];
+            for (const id in pcs) {
+                if (id !== senderId) {
+                    floodAnimations.push(animatePacket(switchEl, pcs[id].el));
+                }
+            }
+            await Promise.all(floodAnimations);
+        }
+
+        isAnimating = false;
+        log(`Transmissão concluída.`, "log-sys");
+        log(`-------------------------`, "log-sys");
+    }
+
+    // Função auxiliar para criar a animação do pacotinho
+    function animatePacket(startEl, endEl) {
+        return new Promise(resolve => {
+            const network = document.getElementById('network');
+            const packet = document.createElement('div');
+            packet.className = 'packet';
+            network.appendChild(packet);
+
+            // Calcula posições
+            const startRect = startEl.getBoundingClientRect();
+            const endRect = endEl.getBoundingClientRect();
+            const netRect = network.getBoundingClientRect();
+
+            // Posição inicial no centro do elemento de origem
+            const startX = startRect.left - netRect.left + (startRect.width / 2) - 10;
+            const startY = startRect.top - netRect.top + (startRect.height / 2) - 10;
+            
+            // Posição final no centro do elemento de destino
+            const endX = endRect.left - netRect.left + (endRect.width / 2) - 10;
+            const endY = endRect.top - netRect.top + (endRect.height / 2) - 10;
+
+            packet.style.left = `${startX}px`;
+            packet.style.top = `${startY}px`;
+            
+            // Força o reflow para a transição funcionar
+            packet.getBoundingClientRect(); 
+
+            packet.style.opacity = '1';
+            packet.style.left = `${endX}px`;
+            packet.style.top = `${endY}px`;
+
+            // Limpa após animação
+            setTimeout(() => {
+                packet.style.opacity = '0';
+                setTimeout(() => packet.remove(), 300);
+                resolve();
+            }, 800); // 800ms é o tempo de transição no CSS
+        });
+    }
+
+    // Inicia com uma mensagem
+    log("Switch inicializado. Tabela MAC vazia.", "log-sys");
+</script>
+
+</body>
+</html>
