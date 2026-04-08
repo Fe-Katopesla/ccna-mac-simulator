@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Avançado - Tabela MAC L2</title>
+    <title>Advanced Simulator - L2 MAC Table</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -36,7 +36,6 @@
             gap: 20px; 
         }
 
-        /* Cabeçalho */
         .header { 
             background: linear-gradient(135deg, var(--primary), var(--secondary)); 
             color: white; 
@@ -48,7 +47,6 @@
         .header h2 { margin: 0; font-size: 24px; font-weight: 700; }
         .header p { margin: 5px 0 0; opacity: 0.8; font-size: 14px; }
         
-        /* Controles */
         .controls { 
             display: flex; 
             gap: 15px; 
@@ -86,19 +84,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 22px; /* Alinhar com os selects */
+            margin-top: 22px; 
         }
         button:hover { background: #0b3d8c; transform: translateY(-1px); }
         button:active { transform: translateY(1px); }
         button.danger { background: var(--danger); }
         button.danger:hover { background: #c0392b; }
 
-        /* Área de Rede (Topologia) */
         .network-area { 
             position: relative; 
             height: 400px; 
             background: var(--card-bg) radial-gradient(circle, #f8f9fa 20%, transparent 20%);
-            background-size: 20px 20px; /* Grid sutil */
+            background-size: 20px 20px; 
             border-radius: 10px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             border: 1px solid var(--border);
@@ -107,7 +104,6 @@
             justify-content: center; 
         }
 
-        /* Cabos SVGs */
         .cables {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -120,7 +116,6 @@
             stroke-dasharray: 5, 5;
         }
 
-        /* Dispositivos */
         .node { 
             position: absolute; 
             display: flex; 
@@ -163,13 +158,11 @@
         }
         .mac-label { font-family: 'Fira Code', monospace; font-size: 11px; color: #7f8c8d; }
 
-        /* Posicionamento dos PCs */
         #pc1 { top: 30px; left: 60px; }
         #pc2 { top: 30px; right: 60px; }
         #pc3 { bottom: 30px; left: 60px; }
         #pc4 { bottom: 30px; right: 60px; }
 
-        /* Animação do Pacote */
         .packet { 
             position: absolute; 
             width: 24px; 
@@ -186,14 +179,13 @@
             box-shadow: 0 0 10px rgba(243, 156, 18, 0.8);
         }
         .packet::after {
-            content: "\f0e0"; /* Icone de carta do fontawesome */
+            content: "\f0e0"; 
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             color: white;
             font-size: 10px;
         }
 
-        /* Tabelas e Logs */
         .info-area { display: flex; gap: 20px; flex-wrap: wrap; }
         .panel { 
             flex: 1; 
@@ -215,16 +207,14 @@
         .panel-header h3 { margin: 0; font-size: 18px; color: var(--secondary); }
         .panel-header i { color: var(--primary); font-size: 20px; }
         
-        /* Estilo da Tabela MAC */
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
         th, td { padding: 12px; border-bottom: 1px solid #eee; }
         th { background: #f8f9fa; font-weight: 600; color: var(--secondary); }
         tr:hover td { background: #f1f2f6; }
-        td:nth-child(2) { font-family: 'Fira Code', monospace; } /* Destacar o MAC */
+        td:nth-child(2) { font-family: 'Fira Code', monospace; } 
         
         .empty-row { text-align: center; color: #95a5a6; font-style: italic; }
 
-        /* Terminal de Logs */
         .log-box { 
             height: 200px; 
             overflow-y: auto; 
@@ -239,13 +229,11 @@
         .log-box p { margin: 6px 0; line-height: 1.4; }
         .log-box p::before { content: "> "; opacity: 0.5; }
         
-        /* Cores do Log */
-        .log-sys { color: #569cd6; } /* Azul claro */
-        .log-learn { color: #4ec9b0; } /* Verde água */
-        .log-action { color: #ce9178; } /* Laranja claro */
-        .log-alert { color: #f44747; } /* Vermelho */
+        .log-sys { color: #569cd6; } 
+        .log-learn { color: #4ec9b0; } 
+        .log-action { color: #ce9178; } 
+        .log-alert { color: #f44747; } 
         
-        /* Scrollbar do log */
         .log-box::-webkit-scrollbar { width: 8px; }
         .log-box::-webkit-scrollbar-track { background: #1e1e1e; }
         .log-box::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
@@ -256,13 +244,13 @@
 
 <div class="container">
     <div class="header">
-        <h2><i class="fa-solid fa-network-wired"></i> Simulador de Comutação L2 (Switching)</h2>
-        <p>Aprenda como um Switch constrói sua Tabela MAC e encaminha quadros Ethernet.</p>
+        <h2><i class="fa-solid fa-network-wired"></i> L2 Switching Simulator</h2>
+        <p>Learn how a Switch builds its MAC Table and forwards Ethernet frames.</p>
     </div>
 
     <div class="controls">
         <div class="control-group">
-            <label for="sender">PC Origem (Sender)</label>
+            <label for="sender">Source PC (Sender)</label>
             <select id="sender">
                 <option value="1">PC 1 (AA:AA:AA:AA:AA:AA)</option>
                 <option value="2">PC 2 (BB:BB:BB:BB:BB:BB)</option>
@@ -271,7 +259,7 @@
             </select>
         </div>
         <div class="control-group">
-            <label for="receiver">PC Destino (Receiver)</label>
+            <label for="receiver">Destination PC (Receiver)</label>
             <select id="receiver">
                 <option value="2">PC 2 (BB:BB:BB:BB:BB:BB)</option>
                 <option value="1">PC 1 (AA:AA:AA:AA:AA:AA)</option>
@@ -280,8 +268,8 @@
                 <option value="FF">Broadcast (FF:FF:FF:FF:FF:FF)</option>
             </select>
         </div>
-        <button onclick="sendFrame()"><i class="fa-solid fa-paper-plane"></i> Enviar Quadro</button>
-        <button class="danger" onclick="clearTable()"><i class="fa-solid fa-trash-can"></i> Limpar Tabela</button>
+        <button onclick="sendFrame()"><i class="fa-solid fa-paper-plane"></i> Send Frame</button>
+        <button class="danger" onclick="clearTable()"><i class="fa-solid fa-trash-can"></i> Clear Table</button>
     </div>
 
     <div class="network-area" id="network">
@@ -294,7 +282,7 @@
 
         <div class="node" id="switch">
             <div class="icon"><i class="fa-solid fa-server"></i></div>
-            <span>Switch L2</span>
+            <span>L2 Switch</span>
         </div>
         <div class="node" id="pc1">
             <div class="icon"><i class="fa-solid fa-desktop"></i></div>
@@ -318,24 +306,24 @@
         <div class="panel">
             <div class="panel-header">
                 <i class="fa-solid fa-table"></i>
-                <h3>Tabela de Endereços MAC</h3>
+                <h3>MAC Address Table</h3>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>Porta (Interface)</th>
-                        <th>Endereço MAC</th>
+                        <th>Port (Interface)</th>
+                        <th>MAC Address</th>
                     </tr>
                 </thead>
                 <tbody id="mac-table-body">
-                    <tr><td colspan="2" class="empty-row">Tabela vazia. Nenhum quadro recebido.</td></tr>
+                    <tr><td colspan="2" class="empty-row">Empty table. No frames received.</td></tr>
                 </tbody>
             </table>
         </div>
         <div class="panel">
             <div class="panel-header">
                 <i class="fa-solid fa-terminal"></i>
-                <h3>Console de Operações (Switch)</h3>
+                <h3>Operations Console (Switch)</h3>
             </div>
             <div class="log-box" id="log-box"></div>
         </div>
@@ -343,7 +331,6 @@
 </div>
 
 <script>
-    // Configuração dos PCs
     const pcs = {
         '1': { mac: 'AA:AA:AA:AA:AA:AA', port: 'Fa0/1', el: document.getElementById('pc1') },
         '2': { mac: 'BB:BB:BB:BB:BB:BB', port: 'Fa0/2', el: document.getElementById('pc2') },
@@ -351,7 +338,7 @@
         '4': { mac: 'DD:DD:DD:DD:DD:DD', port: 'Fa0/4', el: document.getElementById('pc4') }
     };
 
-    let macTable = {}; // Tabela MAC (MAC -> Porta)
+    let macTable = {}; 
     let isAnimating = false; 
 
     function log(message, type = 'log-sys') {
@@ -366,7 +353,7 @@
         const entries = Object.entries(macTable);
         
         if (entries.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="2" class="empty-row">Tabela vazia. Nenhum quadro recebido.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="2" class="empty-row">Empty table. No frames received.</td></tr>`;
             return;
         }
 
@@ -378,7 +365,7 @@
     function clearTable() {
         macTable = {};
         updateTableUI();
-        log("Tabela MAC limpa (Simulação de Aging Timer/Manual).", "log-alert");
+        log("MAC Table cleared (Manual/Aging Timer simulation).", "log-alert");
     }
 
     async function sendFrame() {
@@ -388,7 +375,7 @@
         const receiverId = document.getElementById('receiver').value;
 
         if (senderId === receiverId) {
-            alert("Origem e Destino não podem ser os mesmos!");
+            alert("Source and Destination cannot be the same!");
             return;
         }
 
@@ -397,26 +384,22 @@
         const switchEl = document.getElementById('switch');
         const isBroadcast = receiverId === "FF";
 
-        log(`[Host] Quadro enviado de PC ${senderId} -> ${isBroadcast ? 'Broadcast' : 'PC ' + receiverId}`, "log-sys");
+        log(`[Host] Frame sent from PC ${senderId} -> ${isBroadcast ? 'Broadcast' : 'PC ' + receiverId}`, "log-sys");
 
-        // PASSO 1: Ingress (PC envia para o Switch)
         await animatePacket(sender.el, switchEl);
 
-        // PASSO 2: Learning (Aprender o MAC de Origem)
         if (!macTable[sender.mac]) {
             macTable[sender.mac] = sender.port;
             updateTableUI();
-            log(`[Switch] APRENDEU: MAC ${sender.mac} associado à porta ${sender.port}.`, "log-learn");
+            log(`[Switch] LEARNED: MAC ${sender.mac} associated with port ${sender.port}.`, "log-learn");
         } else {
-            log(`[Switch] VERIFICADO: MAC ${sender.mac} já existe na porta ${sender.port}. Timer renovado.`, "log-sys");
+            log(`[Switch] VERIFIED: MAC ${sender.mac} already exists on port ${sender.port}. Timer renewed.`, "log-sys");
         }
 
-        await new Promise(r => setTimeout(r, 400)); // Delay para leitura do log
+        await new Promise(r => setTimeout(r, 400)); 
 
-        // PASSO 3: Forwarding Decision
         if (isBroadcast) {
-            // Lógica de Broadcast
-            log(`[Switch] DECISÃO: Destino é Broadcast. Executando FLOODING para todas as portas ativas (exceto entrada).`, "log-alert");
+            log(`[Switch] DECISION: Destination is Broadcast. Executing FLOODING to all active ports (except incoming).`, "log-alert");
             const floodAnimations = [];
             for (const id in pcs) {
                 if (id !== senderId) {
@@ -425,14 +408,13 @@
             }
             await Promise.all(floodAnimations);
         } else {
-            // Lógica Unicast
             const receiver = pcs[receiverId];
             if (macTable[receiver.mac]) {
                 const targetPort = macTable[receiver.mac];
-                log(`[Switch] DECISÃO: MAC ${receiver.mac} encontrado. Encaminhando via UNICAST para ${targetPort}.`, "log-action");
+                log(`[Switch] DECISION: MAC ${receiver.mac} found. Forwarding via UNICAST to ${targetPort}.`, "log-action");
                 await animatePacket(switchEl, receiver.el);
             } else {
-                log(`[Switch] DECISÃO: MAC ${receiver.mac} desconhecido. Executando UNKNOWN UNICAST FLOODING.`, "log-alert");
+                log(`[Switch] DECISION: MAC ${receiver.mac} unknown. Executing UNKNOWN UNICAST FLOODING.`, "log-alert");
                 const floodAnimations = [];
                 for (const id in pcs) {
                     if (id !== senderId) {
@@ -444,7 +426,7 @@
         }
 
         isAnimating = false;
-        log(`--- Transmissão Concluída ---`, "log-sys");
+        log(`--- Transmission Complete ---`, "log-sys");
     }
 
     function animatePacket(startEl, endEl) {
@@ -458,7 +440,6 @@
             const endRect = endEl.getBoundingClientRect();
             const netRect = network.getBoundingClientRect();
 
-            // Deslocamento para alinhar ao centro do ícone
             const startX = startRect.left - netRect.left + (startRect.width / 2) - 14;
             const startY = startRect.top - netRect.top + (startRect.height / 2) - 25;
             
@@ -468,14 +449,12 @@
             packet.style.left = `${startX}px`;
             packet.style.top = `${startY}px`;
             
-            // Forçar reflow para iniciar a transição CSS
             packet.getBoundingClientRect(); 
 
             packet.style.opacity = '1';
             packet.style.left = `${endX}px`;
             packet.style.top = `${endY}px`;
 
-            // Remover elemento após a animação
             setTimeout(() => {
                 packet.style.opacity = '0';
                 setTimeout(() => packet.remove(), 300);
@@ -484,9 +463,8 @@
         });
     }
 
-    // Init
-    log("Sistema Online. Switch L2 inicializado.", "log-sys");
-    log("Tabela CAM vazia. Aguardando tráfego de rede...", "log-sys");
+    log("System Online. L2 Switch initialized.", "log-sys");
+    log("CAM Table empty. Waiting for network traffic...", "log-sys");
 </script>
 
 </body>
