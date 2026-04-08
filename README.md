@@ -1,6 +1,6 @@
 # 🖧 CCNA L2 Switch MAC Simulator
 
-![Project Preview](https://github.com/user-attachments/assets/e3bb4a5e-74c2-44f2-b0d7-ce26c14b2474)
+![Project Preview](https://github.com/user-attachments/assets/15e62763-da69-4254-bf92-b0baed06bde8)
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-2ecc71?style=for-the-badge&logo=github)](https://fe-katopesla.github.io/ccna-mac-simulator/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)]()
