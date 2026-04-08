@@ -11,7 +11,7 @@ This project is an interactive simulator of a Local Area Network (LAN) topology 
 
 ---
 
-## 🎯 Project Objective
+## Project Objective
 
 The main goal of this simulator is to practically demonstrate the three fundamental concepts of the Data Link Layer:
 1. **Address Learning:** How the switch learns the source MAC address and the incoming port.
@@ -20,7 +20,7 @@ The main goal of this simulator is to practically demonstrate the three fundamen
 
 ---
 
-## ✨ Features
+## Features
 
 * **Visual Traffic Simulation:** CSS animations showing the frame's journey from the source PC to the Switch, and from the Switch to the destination.
 * **Dynamic MAC Table:** The table updates in real-time as soon as the Switch "learns" a new MAC address based on incoming traffic.
@@ -31,13 +31,13 @@ The main goal of this simulator is to practically demonstrate the three fundamen
 
 ---
 
-## 🚀 How to Run the Project
+## How to Run the Project
 
 Since the project was built using only native front-end technologies (Vanilla JS), there is no need to install libraries, dependencies, or complex servers (Node, NPM, etc.).
 
 ### Option 1: Via GitHub Pages (Recommended)
 Access the hosted version directly via the link:
-👉 **[Access the Online Simulator](https://fe-katopesla.github.io/ccna-mac-simulator/)**
+**[Access the Online Simulator](https://fe-katopesla.github.io/ccna-mac-simulator/)**
 
 ### Option 2: Locally on your machine
 1. Clone this repository:
@@ -49,7 +49,7 @@ Access the hosted version directly via the link:
    ```bash
    cd ccna-mac-simulator
  ``
- ## 📚 Applied Networking Concepts
+ ## Applied Networking Concepts
 
 By using this simulator, you are validating the following topics covered in CCNA study guides:
 
@@ -60,13 +60,13 @@ By using this simulator, you are validating the following topics covered in CCNA
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 * **HTML5:** Semantic structuring of the topology and controls.
 * **CSS3:** Responsive styling, Flexbox layout, and state transition animations (`transition` and DOM manipulation).
 * **JavaScript (Vanilla):** MAC Table state logic, timing control (`Promises` and `setTimeout`), and dynamic event injection into the DOM.
 
-📚 Applied Networking Concepts
+ Applied Networking Concepts
 
 By using this simulator, you are validating the following topics covered in CCNA study guides:
 
@@ -78,7 +78,7 @@ By using this simulator, you are validating the following topics covered in CCNA
 
     Core Behavior: Switches learn by observing the Source MAC and forward by observing the Destination MAC.
 
-🛠️ Technologies Used
+ Technologies Used
 
     HTML5: Semantic structuring of the topology and controls.
 
